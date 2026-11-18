@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-state="checking">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promptly - Account</title>
+    <link rel="icon" href="/images/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/account/style.css" />
+    <link rel="stylesheet" href="../css/top-bar.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <a class="top-bar-logo" href="/prompt">Promptly<span>.</span></a>
+      <nav aria-label="Main navigation">
+        <a href="/prompt">Prompt</a>
+        <div class="account-menu">
+          <button type="button" class="account-menu-link" aria-expanded="false">Account ⏷</button>
+          <div class="account-dropdown">
+            <a href="/account#streak">Streak</a>
+            <a href="/settings">Settings</a>
+            <a href="/login" id="logout-link">Log Out</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="account-card" aria-labelledby="account-heading">
+        <h1 id="account-heading">Your account</h1>
+        <p class="intro">A little space for you and your writing.</p>
+
+        <div class="stats">
+          <div><h2>Today</h2><p id="today-status">Loading…</p></div>
+          <div><h2>Days written</h2><p id="writing-days">Loading…</p></div>
+          <div id="streak"><h2>✨ Streak</h2><p id="writing-streak">Loading…</p></div>
+        </div>
+        <a class="write-link" href="/prompt">Go to today's prompt</a>
+        <p id="account-message" class="message" role="status" aria-live="polite" hidden></p>
+        <button id="retry-button" type="button" hidden>Try again</button>
+      </section>
+      <section class="account-card" aria-labelledby="history-heading">
+        <h2 id="history-heading">Your writing</h2>
+        <p id="history-status" role="status">Loading your saved responses…</p>
+        <div id="writing-history"></div>
+      </section>
+    </main>
+    <script src="/js/account-menu.js" defer></script>
+    <script type="module" src="/js/account.js"></script>
+  </body>
+</html>

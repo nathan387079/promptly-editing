@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Promptly - Support</title>
+    <link rel="icon" href="../images/favicon.png" type="image/png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/support/style.css" />
+    <link rel="stylesheet" href="../css/top-bar.css" />
+  </head>
+
+  <body>
+    <header class="top-bar">
+      <a class="top-bar-logo" href="/prompt">Promptly<span>.</span></a>
+
+      <nav>
+        <a href="/">Home</a>
+        <a href="/prompt">Prompt</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="support-section" aria-labelledby="support-heading">
+        <div class="support-box support-text">
+          <h2 id="support-heading">How can we help?</h2>
+          <p class="support-intro">Ask a question, report a problem, or share an idea.</p>
+
+          <form id="support-form" novalidate>
+            <label for="support-subject">Subject</label>
+            <select id="support-subject" aria-required="true">
+              <option value="">Choose a subject</option>
+              <option value="General question">General question</option>
+              <option value="Report a problem">Report a problem</option>
+              <option value="Suggest an idea">Suggest an idea</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <div id="custom-subject-field" hidden>
+              <label for="custom-subject">Your subject</label>
+              <input
+                id="custom-subject"
+                type="text"
+                maxlength="120"
+                disabled
+                placeholder="What would you like to talk about?"
+              />
+            </div>
+
+            <label for="support-text">Message</label>
+            <textarea
+              id="support-text"
+              rows="6"
+              maxlength="5000"
+              placeholder="Detail your request here..."
+              aria-describedby="support-help"
+              aria-required="true"
+            ></textarea>
+            <p id="support-help" class="support-help">
+              Please do not include passwords or sensitive information.
+            </p>
+
+            <p
+              id="support-message"
+              class="support-message"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            ></p>
+            <button id="submit-button" type="submit">Send Message</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../js/support.js"></script>
+  </body>
+</html>

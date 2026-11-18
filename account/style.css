@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+  background: #ededed;
+  color: #333333;
+  font-family: "Quicksand", sans-serif;
+}
+html[data-auth-state="checking"] main { visibility: hidden; }
+main {
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 23px 21px;
+  display: grid;
+  grid-auto-rows: max-content;
+  align-content: start;
+  gap: 24px;
+  overflow: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #a3a3a3 transparent;
+}
+.account-card {
+  min-width: 0;
+  min-height: 0;
+  border: 1px dashed #cccccc;
+  border-radius: 18px;
+  padding: 32px 36px;
+}
+h1, h2 { color: #1b6166; -webkit-user-select: none; user-select: none; }
+h1 { font-size: 26px; margin: 0 0 10px; }
+h2 { font-size: 22px; margin: 0 0 16px; }
+.intro { margin: 0 0 24px; line-height: 1.6; }
+.profile { display: grid; gap: 18px; margin: 0 0 24px; }
+dt { color: #59627a; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+dd { margin: 0; overflow-wrap: anywhere; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.stats > div { padding: 20px; border-radius: 12px; background: #f3f5fa; }
+.stats h2 { font-size: 16px; margin: 0 0 8px; }
+.stats p { font-size: 20px; font-weight: 600; margin: 0; }
+.write-link, button { display: inline-block; border: none; border-radius: 10px; padding: 14px 20px; background: #1b6166; color: white; font: 700 16px "Quicksand", sans-serif; text-decoration: none; cursor: pointer; }
+button { margin-top: 12px; }
+[hidden] { display: none !important; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #1b6166; outline-offset: 4px; }
+.message { padding: 10px 12px; border: 1px solid #e4a4a4; border-radius: 12px; background: #fff4f4; color: #a63b3b; font-size: 14px; line-height: 1.4; }
+details { border: 1px solid #d9dfe5; border-radius: 12px; margin-top: 12px; background: #f3f5fa; overflow-wrap: anywhere; }
+summary { padding: 18px; cursor: pointer; font-weight: 600; line-height: 1.6; }
+summary time { display: block; font-size: 14px; color: #59627a; }
+.saved-response { white-space: pre-wrap; line-height: 1.8; margin: 0; padding: 0 18px 20px; }
+#settings { gap: 8px; }
+#settings label { color: #59627a; font-weight: 700; font-size: 14px; }
+#settings input { box-sizing: border-box; width: 100%; padding: 16px 18px; border: none; border-radius: 10px; background: #f3f5fa; color: #333; font: inherit; margin-bottom: 12px; }
+#settings input:focus { outline: none; box-shadow: 0 0 0 2px rgba(80, 93, 255, 0.15); }
+#settings button { justify-self: start; }
+#email-help { margin: 0; color: #59627a; font-size: 14px; }
+.message.success { border-color: #a8d8c1; background: #f2fbf6; color: #236a49; }
+.message.info { border-color: #b9c7e6; background: #f5f8ff; color: #3c527d; }
+#save-profile:disabled { opacity: .6; cursor: default; }
+@media (max-width: 600px) {
+  main { padding: 20px 14px 40px; }
+  .account-card { padding: 24px 20px; }
+  .stats { grid-template-columns: 1fr; }
+  .top-bar { flex-wrap: wrap; gap: 12px; }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Promptly - Home</title>
+    <link rel="icon" href="../images/favicon.png" type="image/png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/login/style.css" />
+    <link rel="stylesheet" href="../css/top-bar.css" />
+  </head>
+
+  <body>
+    <header class="top-bar">
+      <a class="top-bar-logo" href="/">Promptly<span>.</span></a>
+
+      <nav>
+        <a href="/">Home</a>
+        <a href="/support">Support</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="login-section">
+        <div class="login-box login-text">
+          <h2>Welcome to Promptly</h2>
+          <p>
+            Sign in or create an account to save your writing, build your streak,
+            and climb the leaderboard!
+          </p>
+
+          <button id="google-login-button" class="login-button" disabled>
+            <img src="../images/google.png" class="login-button-img" alt="Google logo" />
+            Continue With Google
+          </button>
+
+          <button id="apple-login-button" class="login-button" disabled>
+            <img src="../images/apple.png" class="login-button-img" alt="Apple logo" />
+            Continue With Apple
+          </button>
+
+          <div class="or-divider">
+            <span>or</span>
+          </div>
+          <form id="email-login-form" class="email-form" novalidate>
+            <label for="email">Email</label>
+
+            <input
+              id="email"
+              disabled
+              type="text" inputmode="email"
+              placeholder="Enter your email address"
+              autocomplete="email"
+              aria-describedby="email-help"
+              aria-required="true"
+            />
+
+            <p
+              id="login-message"
+              class="login-message"
+              role="alert"
+              aria-live="polite"
+            ></p>
+
+            <button id="email-submit-button" class="email-submit" type="submit" disabled>
+              <img src="../images/email.png" class="login-button-img" alt="" />
+              <span id="email-submit-label">Continue With Email</span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="../js/login.js"></script>
+  </body>
+</html>

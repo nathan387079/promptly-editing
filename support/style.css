@@ -1,0 +1,251 @@
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc transparent;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #ededed;
+}
+
+.about-section {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  padding: 23px 21px;
+  padding-bottom: 0;
+  align-items: stretch;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.about-box {
+  flex: 1 1 0;
+  min-width: 0;
+  height: auto;
+  border: 1px dashed #cccccc;
+  border-radius: 18px;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.about-text h2 {
+  color: #1b6166;
+  font-size: 24px;
+  text-align: center;
+  margin: 0 0 3px 0;
+  transition: transform 0.2s ease;
+}
+
+.about-text h2:hover {
+  transform: scale(1.02);
+  cursor: default;
+}
+
+.about-text p {
+  text-align: center;
+}
+
+.support-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 36px 24px 48px;
+  box-sizing: border-box;
+}
+
+.support-box {
+  width: 100%;
+  max-width: 540px;
+  min-width: 0;
+  border: 1px dashed #cccccc;
+  border-radius: 18px;
+  padding: 32px 36px 36px;
+  box-sizing: border-box;
+}
+
+.support-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.support-text h2 {
+  -webkit-user-select: none;
+  user-select: none;
+  color: #1b6166;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+
+.support-text h2:hover {
+  transform: scale(1.02);
+  cursor: default;
+}
+
+.support-intro {
+  color: #333333;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#support-form {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+#support-form > label:first-child {
+  margin-top: 6px;
+}
+
+#support-form label {
+  display: block;
+  margin: 20px 0 8px;
+  color: #59627a;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#support-form select,
+#support-form input,
+#support-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 18px;
+  height: 56px;
+  border: none;
+  border-radius: 10px;
+  background: #f3f5fa;
+  color: #333333;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+#support-form input::placeholder,
+#support-form textarea::placeholder {
+  color: #9aa5bf;
+  font-weight: 600;
+}
+
+#support-form .input-error {
+  border-color: #dc5c5c;
+  background: #fff7f7;
+}
+
+#support-form textarea {
+  height: auto;
+  padding: 16px 18px;
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+#support-form select:focus,
+#support-form input:focus,
+#support-form textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(80, 93, 255, 0.15);
+}
+
+#submit-button:focus-visible {
+  outline: 2px solid #1b6166;
+  outline-offset: 2px;
+}
+
+.support-help {
+  color: #59627a;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 12px 0 0;
+}
+
+.support-message {
+  display: none;
+  min-height: 24px;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #e4a4a4;
+  border-radius: 12px;
+  background: #fff4f4;
+  color: #a63b3b;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.support-message.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.support-message.success {
+  border-color: #a8d8c1;
+  background: #f2fbf6;
+  color: #236a49;
+}
+
+.support-message.info {
+  border-color: #b9c7e6;
+  background: #f5f8ff;
+  color: #3c527d;
+}
+
+#submit-button {
+  width: 100%;
+  height: 52px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 10px;
+  background: #1b6166;
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+#submit-button:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+#submit-button:disabled { opacity: 0.6; cursor: wait; }
+
+.support-message.show + #submit-button {
+  margin-top: 12px;
+}
+
+@media (max-width: 600px) {
+  .support-section { padding: 20px 14px 40px; }
+  .support-box { padding: 26px 20px 28px; border-radius: 14px; }
+  .support-text h2 { font-size: 22px; }
+  .support-intro { font-size: 16px; line-height: 1.5; }
+  #support-form input,
+  #support-form select { height: 54px; }
+}

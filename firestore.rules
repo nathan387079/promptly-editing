@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /supportRequests/{requestId} {
+      allow create: if request.resource.data.keys().hasAll(['category', 'subject', 'message', 'status', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['category', 'subject', 'message', 'status', 'createdAt'])
+        && request.resource.data.category in ['General question', 'Report a problem', 'Suggest an idea', 'Other']
+        && request.resource.data.subject is string
+        && request.resource.data.subject.size() > 0
+        && request.resource.data.subject.size() <= 120
+        && (request.resource.data.category == 'Other' || request.resource.data.subject == request.resource.data.category)
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 10
+        && request.resource.data.message.size() <= 5000
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if false;
+    }
+
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /responses/{responseId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Promptly - Home</title>
+    <link rel="icon" href="images/favicon.png" type="image/png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./css/top-bar.css" />
+  </head>
+
+  <body>
+    <header class="top-bar">
+      <a class="top-bar-logo" href="/prompt">Promptly<span>.</span></a>
+
+      <nav aria-label="Main navigation">
+        <a id="account-support-link" href="/support">Support</a>
+        <a id="auth-link" href="/login">Sign In ↗</a>
+        <div id="home-account-menu" class="account-menu" hidden>
+          <button type="button" class="account-menu-link" aria-expanded="false">Account ⏷</button>
+          <div class="account-dropdown">
+            <a href="/account#streak">Streak</a>
+            <a href="/account">Account</a>
+            <a href="/settings">Settings</a>
+            <a href="/login" id="logout-link">Log Out</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="feature-section">
+        <div class="feature-box feature-image">
+          <img src="images/favicon.png" alt="Promptly Logo" />
+        </div>
+
+        <div class="feature-box feature-text">
+          <h1>Make writing a daily habit.</h1>
+          <p>
+            Promptly is a creative writing platform that gives you a new prompt every
+            day, from personal questions to imaginative stories. Build your streak,
+            get instant feedback, and track your growth as a writer.
+          </p>
+          <p>Turn a few minutes of writing into a habit that lasts!</p>
+          <p>Use Promptly to <span id="changing-word">grow</span>.</p>
+        </div>
+      </section>
+    </main>
+    <p id="logout-message" role="alert" hidden></p>
+
+    <script type="module">
+      import { auth } from "./js/firebase.js";
+      import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+      const authLink = document.getElementById("auth-link");
+      const accountSupportLink = document.getElementById("account-support-link");
+      const accountMenu = document.getElementById("home-account-menu");
+      const navigation = authLink.parentElement;
+      onAuthStateChanged(auth, (user) => {
+        authLink.textContent = user ? "Prompt" : "Sign In ↗";
+        authLink.href = user ? "/prompt" : "/login";
+        accountSupportLink.hidden = !!user;
+        accountMenu.hidden = !user;
+        accountMenu.dispatchEvent(new Event("close-account-menu"));
+        if (user) navigation.prepend(authLink);
+        else navigation.append(authLink);
+      });
+      document.getElementById("logout-link").addEventListener("click", async (event) => {
+        event.preventDefault();
+        const message = document.getElementById("logout-message");
+        message.hidden = true;
+        try {
+          await signOut(auth);
+          window.location.replace("/login");
+        } catch {
+          message.textContent = "Couldn't log out. Please try again.";
+          message.hidden = false;
+        }
+      });
+    </script>
+    <script src="/js/account-menu.js" defer></script>
+    <script>
+      const words = ["discover", "explore", "develop", "refine", "express", "grow", "improve"];
+      let index = 0;
+
+      const word = document.getElementById("changing-word");
+
+      setInterval(() => {
+        index = (index + 1) % words.length;
+        word.textContent = words[index];
+      }, 2500);
+    </script>
+  </body>
+</html>
