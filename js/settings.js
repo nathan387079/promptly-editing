@@ -5,7 +5,7 @@ const byId = (id) => document.getElementById(id);
 const types = {
     personal: "Personal", premium: "Premium", student: "Student", teacher: "Teacher",
     "school-administrator": "School Administrator",
-    "site-administrator": "Site Administrator", "support-team": "Support Team"
+    "site-administrator": "Site Administrator", moderator: "Moderator", "support-team": "Support Team"
 };
 let currentUser = null;
 let saving = false;

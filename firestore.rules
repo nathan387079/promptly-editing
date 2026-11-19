@@ -2,6 +2,37 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function hasRole(role) {
+      return signedIn() && request.auth.token.role == role;
+    }
+
+    function siteAdmin() {
+      return hasRole('site-administrator');
+    }
+
+    function schoolAdmin(schoolId) {
+      return hasRole('school-administrator') && request.auth.token.schoolId == schoolId;
+    }
+
+    function classData(classId) {
+      return get(/databases/$(database)/documents/classrooms/$(classId)).data;
+    }
+
+    function canManageClass(classId) {
+      let classroom = classData(classId);
+      return siteAdmin()
+        || (hasRole('teacher') && classroom.teacherUid == request.auth.uid)
+        || schoolAdmin(classroom.schoolId);
+    }
+
+    function isClassMember(classId) {
+      return signedIn() && exists(/databases/$(database)/documents/classrooms/$(classId)/members/$(request.auth.uid));
+    }
+
     match /supportRequests/{requestId} {
       allow create: if request.resource.data.keys().hasAll(['category', 'subject', 'message', 'status', 'createdAt'])
         && request.resource.data.keys().hasOnly(['category', 'subject', 'message', 'status', 'createdAt'])
@@ -15,15 +46,136 @@ service cloud.firestore {
         && request.resource.data.message.size() <= 5000
         && request.resource.data.status == 'new'
         && request.resource.data.createdAt == request.time;
-      allow read, update, delete: if false;
+      allow read: if siteAdmin() || hasRole('moderator') || hasRole('support-team');
+      allow update: if (siteAdmin() || hasRole('moderator') || hasRole('support-team'))
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data.status in ['new', 'in-progress', 'resolved'];
+      allow delete: if false;
+    }
+
+    match /schools/{schoolId} {
+      allow get, list: if siteAdmin()
+        || schoolAdmin(schoolId)
+        || (hasRole('teacher') && request.auth.token.schoolId == schoolId);
+      allow create: if siteAdmin()
+        && request.resource.data.keys().hasAll(['name', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['name', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.createdAt == request.time;
+      allow update: if siteAdmin() || (schoolAdmin(schoolId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'updatedAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.updatedAt == request.time);
+      allow delete: if false;
+    }
+
+    match /classrooms/{classId} {
+      // The document ID is the invite code. A signed-in student can look up a code,
+      // but cannot enumerate classrooms or read class work without joining.
+      allow get: if signedIn();
+      allow list: if siteAdmin()
+        || (hasRole('teacher') && resource.data.teacherUid == request.auth.uid)
+        || schoolAdmin(resource.data.schoolId);
+      allow create: if hasRole('teacher')
+        && request.resource.data.keys().hasAll(['name', 'schoolId', 'schoolName', 'teacherUid', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['name', 'schoolId', 'schoolName', 'teacherUid', 'createdAt'])
+        && request.resource.data.teacherUid == request.auth.uid
+        && request.resource.data.schoolId == request.auth.token.get('schoolId', '')
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.schoolName is string
+        && request.resource.data.createdAt == request.time;
+      allow update, delete: if false;
+
+      match /members/{memberUid} {
+        allow get, list: if (signedIn() && request.auth.uid == memberUid)
+          || canManageClass(classId);
+        allow create, update: if hasRole('student')
+          && request.auth.uid == memberUid
+          && request.resource.data.keys().hasAll(['uid', 'name', 'email', 'joinedAt'])
+          && request.resource.data.keys().hasOnly(['uid', 'name', 'email', 'joinedAt'])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.name is string
+          && request.resource.data.name.size() <= 100
+          && request.resource.data.email is string
+          && request.resource.data.email.size() <= 320
+          && request.resource.data.joinedAt == request.time;
+        allow delete: if false;
+      }
+
+      match /assignments/{assignmentId} {
+        allow read: if canManageClass(classId) || isClassMember(classId);
+        allow create: if canManageClass(classId)
+          && request.resource.data.keys().hasAll(['title', 'prompt', 'dueDate', 'teacherUid', 'schoolId', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['title', 'prompt', 'dueDate', 'teacherUid', 'schoolId', 'createdAt'])
+          && request.resource.data.title is string
+          && request.resource.data.title.size() > 0
+          && request.resource.data.title.size() <= 100
+          && request.resource.data.prompt is string
+          && request.resource.data.prompt.size() > 0
+          && request.resource.data.prompt.size() <= 2000
+          && request.resource.data.dueDate is string
+          && request.resource.data.teacherUid == request.auth.uid
+          && request.resource.data.schoolId == classData(classId).schoolId
+          && request.resource.data.createdAt == request.time;
+        allow update, delete: if false;
+
+        match /submissions/{studentUid} {
+          allow read: if canManageClass(classId)
+            || (signedIn() && request.auth.uid == studentUid && isClassMember(classId));
+          allow create, update: if hasRole('student')
+            && request.auth.uid == studentUid
+            && isClassMember(classId)
+            && request.resource.data.keys().hasAll(['uid', 'name', 'response', 'submittedAt'])
+            && request.resource.data.keys().hasOnly(['uid', 'name', 'response', 'submittedAt'])
+            && request.resource.data.uid == request.auth.uid
+            && request.resource.data.name is string
+            && request.resource.data.name.size() <= 100
+            && request.resource.data.response is string
+            && request.resource.data.response.size() >= 30
+            && request.resource.data.response.size() <= 10000
+            && request.resource.data.submittedAt == request.time;
+          allow delete: if false;
+        }
+      }
     }
 
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      function validProfileFields() {
+        return request.resource.data.keys().hasOnly(['displayName', 'email', 'photoURL', 'lastLoginAt', 'account-type']);
+      }
+      allow read: if signedIn() && request.auth.uid == userId;
+      allow create: if signedIn() && request.auth.uid == userId
+        && validProfileFields()
+        && request.resource.data.get('account-type', 'personal') == 'personal';
+      allow update: if signedIn() && request.auth.uid == userId
+        && validProfileFields()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'email', 'photoURL', 'lastLoginAt'])
+        || (signedIn() && request.auth.uid == userId
+          && validProfileFields()
+          && !resource.data.keys().hasAny(['account-type'])
+          && request.resource.data.get('account-type', 'personal') == 'personal'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'email', 'photoURL', 'lastLoginAt', 'account-type']));
+      allow delete: if false;
 
       match /responses/{responseId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if signedIn() && request.auth.uid == userId;
       }
+
+      match /purchases/{purchaseId} {
+        allow read: if signedIn() && request.auth.uid == userId;
+        allow create, update, delete: if false;
+      }
+    }
+
+    // Enables students to query only their own classroom memberships by UID.
+    match /{path=**}/members/{memberUid} {
+      allow get, list: if signedIn() && resource.data.uid == request.auth.uid;
     }
   }
 }

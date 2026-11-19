@@ -93,3 +93,20 @@ The project already includes the foundation of the MVP:
 ## Summary
 
 Promptly is positioned as a daily writing habit app with a strong creative and reflective angle. The current MVP already includes the essential building blocks: login, daily prompts, and saved writing submissions. The next steps should focus on retention, feedback, and growth-tracking features that make the app feel rewarding without turning writing into a performance score.
+
+## Dashboards and membership
+
+The role dashboard is at `/dashboard/`:
+
+- Teachers create classrooms, share a class code, post assignments, and review submitted class work.
+- Students join with a class code and submit work to assignments. Their personal daily writing remains private.
+- School administrators can update their school name and review its classrooms.
+- Site administrators can create and list schools.
+- Moderators and support staff can review support requests and update their status.
+- Personal accounts can view writing totals and membership status.
+
+Role access uses Firebase Authentication custom claims. The profile field `account-type` is not trusted for permissions. Set claims only through the Firebase Admin SDK, then deploy `firestore.rules` before enabling the dashboards. See [ACCOUNT_TYPES.md](ACCOUNT_TYPES.md) for role names, school scoping, and setup steps.
+
+The Premium page is at `/shop/`. It reads purchase history but keeps checkout disabled until `js/app-config.js` has a hosted HTTPS payment link and a trusted webhook is configured to verify charges, write purchase records, and set the `premium` claim. Never write purchase records or premium status from browser code.
+
+The public landing pages load AdSense Auto ads using the publisher ID already present in `googleads.txt`. Ad display depends on the AdSense account approving the site and enabling Auto ads.

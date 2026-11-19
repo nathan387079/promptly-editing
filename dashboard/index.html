@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-auth-state="checking">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Your Promptly writing, classroom, and school dashboard." />
+    <title>Promptly — Dashboard</title>
+    <link rel="icon" href="/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/top-bar.css" />
+    <link rel="stylesheet" href="/dashboard/style.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <a class="top-bar-logo" href="/">Promptly<span>.</span></a>
+      <nav aria-label="Main navigation">
+        <a href="/prompt">Write</a>
+        <a href="/shop">Premium</a>
+        <div class="account-menu">
+          <button type="button" class="account-menu-link" aria-expanded="false">Account ⏷</button>
+          <div class="account-dropdown">
+            <a href="/account">My writing</a>
+            <a href="/settings">Settings</a>
+            <a href="/login" id="logout-link">Log out</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="welcome card">
+        <div>
+          <p class="eyebrow">YOUR PROMPTLY SPACE</p>
+          <h1 id="welcome-title">Your dashboard</h1>
+          <p id="welcome-copy">A calm place to keep your writing moving.</p>
+        </div>
+        <span id="role-badge" class="role-badge">Personal</span>
+      </section>
+      <p id="dashboard-message" class="notice" role="status" aria-live="polite" hidden></p>
+
+      <section id="personal-panel" class="panel-grid" hidden>
+        <article class="card stat-card"><span>Writing days</span><strong id="writing-days">—</strong><a href="/account">See your history →</a></article>
+        <article class="card stat-card"><span>Current streak</span><strong id="writing-streak">—</strong><a href="/prompt">Write today →</a></article>
+        <article class="card stat-card"><span>Membership</span><strong id="membership-status">Free</strong><a href="/shop">Explore Premium →</a></article>
+        <article class="card wide-card">
+          <p class="eyebrow">YOUR WRITING</p><h2>Keep your daily practice going</h2>
+          <p>Your saved responses and progress are private to your account.</p>
+          <a class="button-link" href="/prompt">Open today’s prompt</a>
+        </article>
+      </section>
+
+      <section id="student-panel" class="role-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">YOUR CLASSROOM</p><h2>Assignments</h2></div></div>
+        <article class="card join-card">
+          <h3>Join a classroom</h3><p>Enter the class code your teacher shared with you.</p>
+          <form id="join-class-form" class="inline-form"><label class="sr-only" for="class-code">Class code</label><input id="class-code" name="code" required maxlength="64" autocomplete="off" placeholder="Class code" /><button type="submit">Join class</button></form>
+        </article>
+        <div id="student-classes" class="class-grid"></div>
+      </section>
+
+      <section id="teacher-panel" class="role-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">TEACHER SPACE</p><h2>Your classrooms</h2></div></div>
+        <article class="card">
+          <h3>Create a classroom</h3><p>Invite students with the private class code created for you.</p>
+          <form id="create-class-form" class="inline-form"><label class="sr-only" for="class-name">Classroom name</label><input id="class-name" required maxlength="80" placeholder="e.g. Period 2 Writers" /><button type="submit">Create classroom</button></form>
+        </article>
+        <div id="teacher-classes" class="class-grid"></div>
+      </section>
+
+      <section id="school-panel" class="role-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">SCHOOL SPACE</p><h2 id="school-heading">School dashboard</h2></div></div>
+        <article class="card school-card">
+          <p id="school-summary">Loading your school…</p>
+          <form id="school-form" class="inline-form" hidden><label class="sr-only" for="school-name">School name</label><input id="school-name" required maxlength="100" placeholder="School name" /><button type="submit">Save school name</button></form>
+        </article>
+        <div class="section-heading"><h2>School classrooms</h2></div>
+        <div id="school-classes" class="class-grid"></div>
+      </section>
+
+      <section id="site-panel" class="role-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">SITE ADMINISTRATION</p><h2>Schools</h2></div></div>
+        <article class="card">
+          <h3>Add a school</h3>
+          <form id="create-school-form" class="inline-form"><label class="sr-only" for="new-school-name">School name</label><input id="new-school-name" required maxlength="100" placeholder="School name" /><button type="submit">Add school</button></form>
+        </article>
+        <div id="all-schools" class="class-grid"></div>
+      </section>
+
+      <section id="moderator-panel" class="role-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">COMMUNITY CARE</p><h2>Support inbox</h2></div><button id="refresh-support" class="quiet-button" type="button">Refresh</button></div>
+        <div id="support-queue" class="support-queue"></div>
+      </section>
+
+      <section id="setup-panel" class="card setup-card" hidden>
+        <p class="eyebrow">ACCOUNT ACCESS</p><h2>Dashboard access hasn’t been set up</h2>
+        <p>Your account is signed in, but it doesn’t have a staff or student access role yet. A site administrator can assign the correct role securely.</p>
+        <a href="/account">Continue to your personal account →</a>
+      </section>
+    </main>
+    <script src="/js/account-menu.js" defer></script>
+    <script type="module" src="/js/dashboard.js"></script>
+  </body>
+</html>

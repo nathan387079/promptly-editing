@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-auth-state="checking">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Manage your Promptly membership and purchase history." />
+    <title>Promptly — Premium</title>
+    <link rel="icon" href="/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/top-bar.css" />
+    <link rel="stylesheet" href="/shop/style.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <a class="top-bar-logo" href="/">Promptly<span>.</span></a>
+      <nav aria-label="Main navigation">
+        <a href="/prompt">Write</a><a href="/dashboard">Dashboard</a>
+        <div class="account-menu">
+          <button type="button" class="account-menu-link" aria-expanded="false">Account ⏷</button>
+          <div class="account-dropdown"><a href="/account">My writing</a><a href="/settings">Settings</a><a href="/login" id="logout-link">Log out</a></div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="shop-hero">
+        <p class="eyebrow">MORE ROOM TO GROW</p>
+        <h1>Promptly Premium</h1>
+        <p>Manage your plan and see purchases tied to your Promptly account.</p>
+      </section>
+      <section class="plan-card" aria-labelledby="plan-heading">
+        <div><p class="eyebrow">YOUR MEMBERSHIP</p><h2 id="plan-heading">Premium</h2><p id="membership-copy">Checking your membership…</p></div>
+        <span id="membership-badge" class="badge">Loading</span>
+        <a id="checkout-link" class="button-link" href="#" hidden>Continue to secure checkout ↗</a>
+        <p id="checkout-note" class="setup-note" hidden>Checkout isn’t connected yet. The site owner needs to add a hosted payment link and payment confirmation setup before purchases can be enabled.</p>
+      </section>
+      <section class="history-card" aria-labelledby="history-heading">
+        <p class="eyebrow">ACCOUNT RECORDS</p><h2 id="history-heading">Purchase history</h2>
+        <p id="purchase-status" role="status">Loading your purchase history…</p>
+        <div id="purchases" class="purchase-list"></div>
+      </section>
+      <p id="shop-message" role="status" aria-live="polite" hidden></p>
+    </main>
+    <script src="/js/app-config.js"></script>
+    <script src="/js/account-menu.js" defer></script>
+    <script type="module" src="/js/shop.js"></script>
+  </body>
+</html>
